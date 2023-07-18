@@ -8,12 +8,13 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock ./
 
 # Install project dependencies
-RUN gem install bundler && bundle install --jobs 4 --retry 3
+RUN apt-get update -qq && apt-get install -y nodejs npm
 
 # Copy the project files to the working directory
 COPY . /app
 
 # Run database migrations and precompile assets
+RUN gem install bundler
 RUN bundle exec rails db:migrate && bundle exec rails assets:precompile
 
 # Expose the default Rails server port
@@ -21,4 +22,3 @@ EXPOSE 3000
 
 # Start the Rails server
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
-
