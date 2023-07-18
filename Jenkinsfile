@@ -24,6 +24,13 @@ pipeline{
                 sh 'docker build -t ashna-baig/devops-assignment:latest .'
             }
         }
-        
+        stage('Push') {
+            steps {
+                
+                sh 'docker push ashnabaig/docker-assignment:latest'
+                echo 'Pushing to DockerHub'
+            }
     } 
 }
+}
+
