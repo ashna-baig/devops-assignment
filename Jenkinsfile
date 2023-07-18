@@ -10,7 +10,12 @@ pipeline{
            }
 	    }
         
-        
+        stage('Login') {
+            steps {
+                sh 'docker login -u ashnabaig -p ashikhan14'
+                echo 'Logging in'
+            }
+        }
         stage("build") {
             steps {
                 echo "Building Docker Image"
@@ -18,5 +23,5 @@ pipeline{
             }
         }
         
-    }
+    } 
 }
