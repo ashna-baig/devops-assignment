@@ -1,24 +1,24 @@
-# Base image
+# Use the official Ruby image as the base image
 FROM ruby:3.2.2
 
-# Set working directory
-WORKDIR /app
-
-# Copy the Gemfile and Gemfile.lock files to the working directory
-COPY Gemfile Gemfile.lock ./
-
-# Install project dependencies
+# Install system dependencies
 RUN apt-get update -qq && apt-get install -y nodejs npm
 
-# Copy the project files to the working directory
-COPY . /app
+# Set the working directory in the container
+WORKDIR /app
 
-# Run database migrations and precompile assets
+# Copy the Gemfile and Gemfile.lock into the container
+COPY Gemfile Gemfile.lock ./
+
+# Install gems specified in the Gemfile
 RUN gem install bundler
-RUN bundle exec rails db:migrate && bundle exec rails assets:precompile
+RUN bundle install
 
-# Expose the default Rails server port
+# Copy the rest of the application code into the container
+COPY . .
+
+# Expose port 3000, which is the default port used by Rails server
 EXPOSE 3000
 
 # Start the Rails server
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+CMD ["rails", "server", "-b", "0.0.0.0"]
